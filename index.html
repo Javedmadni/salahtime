@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Prayer Times - KULLIYATUR RAASHIDAATIL ISLAMIYAH</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .header { 
+            background-color: #008000; 
+            color: white; 
+            padding: 20px; 
+            border-radius: 10px 10px 0 0; 
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 1.6em; 
+            font-weight: bold;
+        }
+        .contact-info { 
+            padding: 10px; 
+            background-color: #e9ecef; 
+            border-bottom: 1px solid #ddd;
+        }
+        .contact-info p { 
+            margin: 3px 0; 
+            color: #333;
+            font-size: 0.9em;
+        }
+        .widget-box { 
+            padding: 15px 10px; 
+            border-radius: 0 0 10px 10px; 
+        }
+        /* Iframe styling */
+        #prayerWidget {
+            /* सेटिंग्स आपके द्वारा दिए गए आकार के अनुसार */
+            width: 182px; 
+            height: 358px; 
+            border: 1px solid #ddd;
+            margin: 15px auto; /* Center the widget */
+            display: block; 
+        }
+        .footer-note {
+            font-size: 0.8em;
+            margin-top: 15px;
+            padding-bottom: 10px;
+            color: #999;
+        }
+        .disclaimer {
+            font-size: 0.85em;
+            color: #cc0000;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>KULLIYATUR RAASHIDAATIL ISLAMIYAH</h1>
+    </div>
+
+    <div class="contact-info">
+        <p>MALVANI, MHADA, MALAD, MUMBAI.</p>
+        <p>Mobile: <strong>+91 87791 22931</strong></p>
+    </div>
+
+    <div class="widget-box">
+        <h2>🌏 नमाज़ और Sunrise का समय</h2>
+        
+        <p class="disclaimer">कृपया सुनिश्चित करें कि विजेट सही स्थान और गणना विधि दिखाता है।</p>
+        
+        <iframe id="prayerWidget" 
+                title="prayerWidget" 
+                scrolling="no" 
+                src="https://www.islamicfinder.org/prayer-widget/"> 
+        </iframe>
+
+        <div class="footer-note">
+            (समय सीधे IslamicFinder से लिया गया है और यूज़र की IP लोकेशन के आधार पर निर्धारित होता है।)
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
