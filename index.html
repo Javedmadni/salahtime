@@ -84,39 +84,76 @@
         
         <p class="disclaimer">PLEASE CONFIRM BEFORE YOU ACTION</p>
         
+<!-- PRAYER WIDGET -->
+<div id="warning" style="color:red; font-weight:bold; display:none;">
+    ⚠ Location access required to load accurate prayer times.
+</div>
+
 <iframe id="prayerWidget"
         title="prayerWidget"
         scrolling="no"
-        style="width:182px; height:358px; border:1px solid #ddd; display:block; margin:auto;"
-        src="https://www.islamicfinder.org/prayer-widget/">
+        style="width:182px; height:358px; border:1px solid #ddd; display:block; margin:auto;">
 </iframe>
 
 <script>
-function loadIFWidget(lat, lon) {
-    let url =
-      "https://www.islamicfinder.org/prayer-widget/" +
-      lat + "," + lon + "/shafi/6/0/18.5/18.0";
 
-    document.getElementById("prayerWidget").src = url;
+// Show widget using IslamicFinder City ID
+function loadWidgetByID(cityID) {
+    document.getElementById("prayerWidget").src =
+        "https://www.islamicfinder.org/prayer-widget/" + cityID + "/shafi/6/0/18.5/18.0";
 }
 
-function useGPS() {
-    if (!navigator.geolocation) return;
+// If user blocks GPS
+function showWarning() {
+    document.getElementById("warning").style.display = "block";
+    document.getElementById("prayerWidget").style.display = "none";
+}
 
-    navigator.geolocation.getCurrentPosition(
-        function (pos) {
-            let lat = pos.coords.latitude.toFixed(6);
-            let lon = pos.coords.longitude.toFixed(6);
-            loadIFWidget(lat, lon);
-        },
-        function (err) {
-            console.log("GPS Blocked — Using Default IslamicFinder Widget");
+// Get IslamicFinder City ID for ANY CITY (Global)
+function getCityID(lat, lon) {
+
+    // Get city name using reverse geo
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+      .then(r => r.json())
+      .then(data => {
+
+        let city =
+          data.address.city ||
+          data.address.town ||
+          data.address.village ||
+          data.address.county;
+
+        if (!city) {
+            showWarning();
+            return;
         }
-    );
+
+        // GLOBAL IslamicFinder ID Auto Fetch (Live)
+        fetch(`https://api.aladhan.com/v1/city?city=${city}`)
+          .then(res => res.json())
+          .then(api => {
+              if (api.data && api.data.length > 0) {
+                  let id = api.data[0].id;
+                  loadWidgetByID(id);
+              } else {
+                  showWarning();
+              }
+          })
+          .catch(() => showWarning());
+      })
+      .catch(() => showWarning());
 }
 
-// Start GPS detection
-useGPS();
+// Get GPS
+navigator.geolocation.getCurrentPosition(
+    pos => {
+        let lat = pos.coords.latitude;
+        let lon = pos.coords.longitude;
+        getCityID(lat, lon);
+    },
+    err => showWarning()
+);
+
 </script>
 
 
@@ -130,6 +167,7 @@ useGPS();
 
 </body>
 </html>
+
 
 
 
