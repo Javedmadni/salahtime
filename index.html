@@ -84,11 +84,32 @@
         
         <p class="disclaimer">PLEASE CONFIRM BEFORE YOU ACTION</p>
         
-        <iframe id="prayerWidget" 
-                title="prayerWidget" 
-                scrolling="no" 
-                src="https://www.islamicfinder.org/prayer-widget/"> 
-        </iframe>
+   <iframe id="prayerWidget"
+        title="prayerWidget" 
+        scrolling="no" 
+        src="https://www.islamicfinder.org/prayer-widget/">
+</iframe>
+
+<script>
+function setPrayerWidget(lat, lon) {
+    let url = `https://www.islamicfinder.org/prayer-widget/${lat},${lon}/shafi/6/0/18.5/18.0`;
+    document.getElementById("prayerWidget").src = url;
+}
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+        pos => {
+            let lat = pos.coords.latitude.toFixed(6);
+            let lon = pos.coords.longitude.toFixed(6);
+            setPrayerWidget(lat, lon);
+        },
+        err => {
+            console.warn("GPS permission denied. Using default widget.");
+        }
+    );
+}
+</script>
+
 
 
         <div class="footer-note">
@@ -101,5 +122,6 @@
 
 </body>
 </html>
+
 
 
