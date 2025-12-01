@@ -84,32 +84,40 @@
         
         <p class="disclaimer">PLEASE CONFIRM BEFORE YOU ACTION</p>
         
-   <iframe id="prayerWidget"
-        title="prayerWidget" 
-        scrolling="no" 
+<iframe id="prayerWidget"
+        title="prayerWidget"
+        scrolling="no"
+        style="width:182px; height:358px; border:1px solid #ddd; display:block; margin:auto;"
         src="https://www.islamicfinder.org/prayer-widget/">
 </iframe>
 
 <script>
-function setPrayerWidget(lat, lon) {
-    let url = `https://www.islamicfinder.org/prayer-widget/${lat},${lon}/shafi/6/0/18.5/18.0`;
+function loadIFWidget(lat, lon) {
+    let url =
+      "https://www.islamicfinder.org/prayer-widget/" +
+      lat + "," + lon + "/shafi/6/0/18.5/18.0";
+
     document.getElementById("prayerWidget").src = url;
 }
 
-if (navigator.geolocation) {
+function useGPS() {
+    if (!navigator.geolocation) return;
+
     navigator.geolocation.getCurrentPosition(
-        pos => {
+        function (pos) {
             let lat = pos.coords.latitude.toFixed(6);
             let lon = pos.coords.longitude.toFixed(6);
-            setPrayerWidget(lat, lon);
+            loadIFWidget(lat, lon);
         },
-        err => {
-            console.warn("GPS permission denied. Using default widget.");
+        function (err) {
+            console.log("GPS Blocked — Using Default IslamicFinder Widget");
         }
     );
 }
-</script>
 
+// Start GPS detection
+useGPS();
+</script>
 
 
         <div class="footer-note">
@@ -122,6 +130,7 @@ if (navigator.geolocation) {
 
 </body>
 </html>
+
 
 
 
