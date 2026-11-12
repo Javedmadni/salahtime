@@ -1,105 +1,195 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Prayer Times - KULLIYATUR RAASHIDAATIL ISLAMIYAH</title>
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            text-align: center; 
-            margin: 0; 
-            padding: 20px; 
-            background-color: #f4f4f9;
-        }
-        .container {
-            max-width: 450px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 10px; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .header { 
-            background-color: #008000; 
-            color: #FFD700; 
-            padding: 20px; 
-            border-radius: 10px 10px 0 0; 
-        }
-        .header h1 { 
-            margin: 0; 
-            font-size: 1.6em; 
-            font-weight: bold;
-        }
-        .contact-info { 
-            padding: 10px; 
-            background-color: #e9ecef; 
-            border-bottom: 1px solid #ddd;
-        }
-        .contact-info p { 
-            margin: 3px 0; 
-            color: #333;
-            font-size: 0.9em;
-        }
-        .widget-box { 
-            padding: 15px 10px; 
-            border-radius: 0 0 10px 10px; 
-        }
-        /* Iframe styling */
-        #prayerWidget {
-            /* As Per Your Location */
-            width: 182px; 
-            height: 358px; 
-            border: 1px solid #ddd;
-            margin: 15px auto; /* Center the widget */
-            display: block; 
-        }
-        .footer-note {
-            font-size: 0.8em;
-            margin-top: 15px;
-            padding-bottom: 10px;
-            color: #999;
-        }
-        .disclaimer {
-            font-size: 0.85em;
-            color: #cc0000;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Prayer Times - KULLIYATUR RAASHIDAATIL ISLAMIYAH</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f9;
+}
+.container {
+    max-width: 450px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.header {
+    background-color: #008000;
+    color: #FFD700;
+    padding: 20px;
+    border-radius: 10px 10px 0 0;
+}
+.header h1 {
+    margin: 0;
+    font-size: 1.6em;
+    font-weight: bold;
+}
+.contact-info {
+    padding: 10px;
+    background-color: #e9ecef;
+    border-bottom: 1px solid #ddd;
+}
+.contact-info p {
+    margin: 3px 0;
+    color: #333;
+    font-size: 0.9em;
+}
+.widget-box {
+    padding: 15px 10px;
+}
+.disclaimer {
+    font-size: 0.85em;
+    color: #cc0000;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.location-box {
+    background: #f0fff0;
+    border: 1px solid #b7dfb7;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 15px auto;
+    max-width: 300px;
+}
+.location-box h3 {
+    color: #008000;
+    margin: 0 0 8px;
+    font-size: 16px;
+}
+#locationName {
+    font-size: 14px;
+    color: #333;
+    overflow-wrap: anywhere;
+}
+.footer-note {
+    font-size: 0.8em;
+    margin-top: 15px;
+    padding-bottom: 10px;
+    color: #999;
+}
+</style>
 </head>
+
 <body>
-
 <div class="container">
-    <div class="header">
-        <h1>KULLIYATUR RAASHIDAATIL ISLAMIYAH</h1>
-    </div>
 
-    <div class="contact-info">
-        <p>MALVANI, MHADA, MALAD, MUMBAI.</p>
-        <p>Mobile: <strong>+91 87791 22931</strong></p>
-    </div>
-
-    <div class="widget-box">
-        <h2>🕋 SALAH AND SUNRISE TIME</h2>
-        
-        <p class="disclaimer">PLEASE CONFIRM BEFORE YOU ACTION</p>
-        
-<iframe style="width: 182px; height: 358px; border: 1px solid #ddd;" scrolling="no" src="https://www.islamicfinder.org/prayer-widget/"> </iframe>
-
-        <div class="footer-note">
-            (TIME AS PER ISLAMICFINDER.ORG, AND BASED ON YOUR LOCATION)
-            (جزاكم الله خيرا كثيرا)
-
-        </div>
-    </div>
+<div class="header">
+<h1>KULLIYATUR RAASHIDAATIL ISLAMIYAH</h1>
 </div>
+
+<div class="contact-info">
+<p>MALVANI, MHADA, MALAD, MUMBAI.</p>
+<p>Mobile: <strong>+91 87791 22931</strong></p>
+</div>
+
+<div class="widget-box">
+
+<h2>🕋 SALAH AND SUNRISE TIME</h2>
+
+<p class="disclaimer">
+PLEASE CONFIRM BEFORE YOU ACTION
+</p>
+
+<iframe
+    title="IslamicFinder Prayer Times"
+    style="width:182px;height:358px;border:1px solid #ddd;"
+    scrolling="no"
+    src="https://www.islamicfinder.org/prayer-widget/">
+</iframe>
+
+<div class="location-box">
+<h3>📍 YOUR CURRENT LOCATION</h3>
+<div id="locationName">Detecting location...</div>
+</div>
+
+<div class="footer-note">
+(TIME AS PER ISLAMICFINDER.ORG, AND BASED ON YOUR LOCATION)
+<br>
+(جزاكم الله خيرا كثيرا)
+</div>
+
+</div>
+</div>
+
+<script>
+const locationName = document.getElementById("locationName");
+
+async function showLocation(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    locationName.textContent = "Finding your city...";
+
+    try {
+        const url =
+            "https://nominatim.openstreetmap.org/reverse" +
+            "?format=jsonv2&lat=" + encodeURIComponent(lat) +
+            "&lon=" + encodeURIComponent(lon) +
+            "&zoom=10&addressdetails=1";
+
+        const response = await fetch(url, {
+            headers: { "Accept": "application/json" }
+        });
+
+        if (!response.ok) throw new Error("Location lookup failed");
+
+        const data = await response.json();
+        const a = data.address || {};
+
+        const city =
+            a.city || a.town || a.village ||
+            a.municipality || a.county || "";
+
+        const region = a.state || "";
+        const country = a.country || "";
+
+        const parts = [...new Set(
+            [city, region, country].filter(Boolean)
+        )];
+
+        locationName.textContent =
+            parts.join(", ") ||
+            "Location found, but city name unavailable.";
+
+    } catch (error) {
+        locationName.textContent =
+            "Location detected, but city name is unavailable.";
+    }
+}
+
+function locationError(error) {
+    if (error.code === 1) {
+        locationName.textContent =
+            "Please allow location access to see your city.";
+    } else {
+        locationName.textContent =
+            "Unable to detect location. Please check GPS.";
+    }
+}
+
+if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+        showLocation,
+        locationError,
+        {
+            enableHighAccuracy: false,
+            timeout: 15000,
+            maximumAge: 300000
+        }
+    );
+} else {
+    locationName.textContent =
+        "Location is not supported by this browser.";
+}
+</script>
 
 </body>
 </html>
-
-
-
-
-
-
-
