@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automatic Shafi'i Salah Times - Kulliyatur Raashidaatil Islamiyah</title>
+<style>
+*{box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;margin:0;padding:20px 12px;background:#f4f4f9;color:#222}.container{max-width:450px;margin:auto;background:white;border-radius:10px;overflow:hidden;box-shadow:0 4px 15px #0002}.header{background:green;color:#ffd700;padding:22px 12px}.header h1{font-size:25px;margin:0}.contact{background:#e9ecef;padding:12px;font-size:14px}.contact p{margin:4px}.content{padding:22px 18px}h2{font-size:23px}.warning{color:#c00;font-size:13px;font-weight:bold}.location{background:#efffef;border:1px solid #b5dfb5;border-radius:8px;padding:12px;margin:15px 0}.location h3{color:green;margin:0 0 7px;font-size:16px}.date{background:#303744;color:white;padding:12px;border-radius:6px;font-weight:600;margin:15px 0}.times{width:100%;border-collapse:collapse;text-align:left}.times td{padding:11px 15px;border-bottom:1px solid #ddd}.times td:last-child{text-align:right;font-weight:700}.times tr:nth-child(odd){background:#f7f8fa}.note{color:#777;font-size:12px;line-height:1.6;margin-top:17px}.error{color:#b00020}.subtle{font-size:12px;color:#555}button{border:0;background:green;color:white;border-radius:6px;padding:10px 14px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>KULLIYATUR RAASHIDAATIL ISLAMIYAH</h1></div>
+<div class="contact"><p>MALVANI, MHADA, MALAD, MUMBAI.</p><p>Mobile: <strong>+91 87791 22931</strong></p></div>
+<div class="content">
+<h2>🕋 SALAH AND SUNRISE TIME</h2>
+<p class="warning">PLEASE CONFIRM TIMES WITH YOUR LOCAL MOSQUE</p>
+<div class="location"><h3>📍 YOUR CURRENT LOCATION</h3><div id="location">Waiting for location permission...</div></div>
+<div id="status" role="status">Getting prayer times...</div>
+<div id="result" hidden>
+<div class="date" id="date"></div>
+<div class="subtle" id="hijri"></div>
+<table class="times" aria-label="Today's prayer times"><tbody id="rows"></tbody></table>
+<p class="subtle" id="method"></p>
+</div>
+<button id="retry" hidden>📍 Allow Location / Try Again</button><p class="subtle" id="permissionHelp" hidden></p>
+<div class="note">Shafi'i (Standard Asr). Calculated times provided by AlAdhan API; not an IslamicFinder timetable. Local mosque times may differ.<br>جزاكم الله خيرا كثيرا</div>
+</div></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const names=[['Fajr','Fajr'],['Sunrise','Sunrise'],['Dhuhr','Dhuhr'],['Asr','Asr'],['Maghrib','Maghrib'],['Isha','Isha']];
+function cleanTime(s){const match=String(s||'').match(/^(\d{1,2}):(\d{2})/);if(!match)return 'Unavailable';let h=Number(match[1]),m=match[2];return `${String(h%12||12).padStart(2,'0')}:${m} ${h>=12?'PM':'AM'}`;}
+async function loadTimes(lat,lon){
+ $('status').textContent='Loading local prayer times...';$('result').hidden=true;
+ // Method 3: Muslim World League. School 0: Shafi'i/standard Asr.
+ // AlAdhan uses coordinates and its timezone handling for local calendar date.
+ const endpoint=new URL('https://api.aladhan.com/v1/timings');
+ endpoint.searchParams.set('latitude',String(lat));endpoint.searchParams.set('longitude',String(lon));
+ endpoint.searchParams.set('method','3');endpoint.searchParams.set('school','0');
+ const response=await fetch(endpoint.toString(),{cache:'no-store'});
+ if(!response.ok)throw Error('Prayer-time service is unavailable.');
+ const json=await response.json();
+ if(json.code!==200||!json.data?.timings||!json.data?.date)throw Error('Invalid prayer-time response.');
+ const d=json.data;
+ $('date').textContent=d.date.readable||'Today';
+ const hijri=d.date.hijri;
+ $('hijri').textContent=hijri?`${hijri.day} ${hijri.month?.en||''} ${hijri.year} AH`:'';
+ $('rows').replaceChildren();
+ for(const [key,label] of names){const tr=document.createElement('tr');const a=document.createElement('td');a.textContent=label;const b=document.createElement('td');b.textContent=cleanTime(d.timings[key]);tr.append(a,b);$('rows').append(tr);}
+ $('method').textContent='Calculation: Muslim World League (MWL), Shafi’i/Standard Asr. Timezone: '+(d.meta?.timezone||'local to coordinates')+'.';
+ $('result').hidden=false;$('status').textContent='';
+}
+async function loadCity(lat,lon){
+ try{const url=new URL('https://nominatim.openstreetmap.org/reverse');url.searchParams.set('format','jsonv2');url.searchParams.set('lat',String(lat));url.searchParams.set('lon',String(lon));url.searchParams.set('zoom','10');const response=await fetch(url);if(!response.ok)return;const data=await response.json();const a=data.address||{};const city=a.city||a.town||a.village||a.municipality||a.county||'';const parts=[...new Set([city,a.state,a.country].filter(Boolean))];if(parts.length)$('location').textContent=parts.join(', ');}catch(e){/* city lookup is optional */}
+}
+function start(){
+ $('retry').hidden=true;$('permissionHelp').hidden=true;$('result').hidden=true;
+ if(!navigator.geolocation){$('status').textContent='Your browser does not support location detection.';$('retry').hidden=false;return;}
+ $('status').textContent='Please allow location access to calculate local times.';
+ navigator.geolocation.getCurrentPosition(async p=>{
+ const {latitude:lat,longitude:lon,accuracy}=p.coords;
+ $('location').textContent=`Location detected (approximately ${Math.round(accuracy)} m accuracy).`;
+ loadCity(lat,lon);
+ try{await loadTimes(lat,lon);}catch(e){$('status').textContent=e.message||'Unable to load prayer times.';$('status').className='error';$('retry').hidden=false;}
+ },e=>{const denied=e.code===1;$('status').textContent=denied?'Location access was denied. Tap the button below to try again.':'Location unavailable. Please check GPS and internet connection.';$('retry').hidden=false;if(denied){$('permissionHelp').hidden=false;$('permissionHelp').textContent='If the popup does not appear, tap the lock or site-settings icon beside the website address, allow Location, then reload. Browsers cannot reopen a permission prompt after a permanent block.';}},{enableHighAccuracy:false,timeout:15000,maximumAge:300000});
+}
+$('retry').addEventListener('click',start);start();
+</script>
+</body>
+</html>
